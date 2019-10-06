@@ -2,7 +2,7 @@ import random
 import time
 import pygame
 pygame.init()
-#www.guthub.com/abhinavmangla
+
 
 width, height = 1000, 500
 screen = pygame.display.set_mode((width,height))
