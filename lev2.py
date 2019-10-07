@@ -5,11 +5,13 @@ pygame.init()
 
 width, height = 1000, 500
 screen = pygame.display.set_mode((width,height))
+# defining color
 red = 255, 0, 0
 blue = 0, 0, 255
 green = 0, 255, 0
 black = 0, 0, 0
 white = 255, 255, 255
+#filling screen
 screen.fill(white)
 
 #winSound = pygame.mixer.Sound('Ta Da.wav')
