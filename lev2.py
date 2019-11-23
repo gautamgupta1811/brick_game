@@ -2,6 +2,7 @@ import random
 import time
 import pygame
 pygame.init()
+import main
 
 width, height = 1000, 500
 screen = pygame.display.set_mode((width,height))
@@ -163,21 +164,14 @@ def game():
 
         if len(lifeList) == 0:
             gameOver()
-        elif len(brickList)== 0:
+            main.home_screen()
+        elif len(brickList) == 0:
             moveBallY =0
             moveBallX = 0
             win()
-
-
-
-
-
-
+            main.home_screen()
 
         clock.tick(FPS)
         pygame.display.update()
-
-
-game()
 
 

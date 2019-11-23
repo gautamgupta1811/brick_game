@@ -1,11 +1,11 @@
 import random
-import time
 import pygame
+import main
+import lev2
 pygame.init()
 
-
 width, height = 1000, 500
-screen = pygame.display.set_mode((width,height))
+screen = pygame.display.set_mode((width, height))
 red = 255, 0, 0
 blue = 0, 0, 255
 green = 0, 255, 0
@@ -13,24 +13,26 @@ black = 0, 0, 0
 white = 255, 255, 255
 screen.fill(white)
 
-#winSound = pygame.mixer.Sound('Ta Da.wav')
+# winSound = pygame.mixer.Sound('Ta Da.wav')
+
 
 def score(count):
     font = pygame.font.SysFont(None, 30)
     text = font.render("Score : {}".format(count), True, black)
     screen.blit(text, (width-100, 0))
 
+
 def gameOver():
     font = pygame.font.SysFont(None, 100)
-    text = font.render("GAME OVER",True, black)
-    screen.blit(text, (width/2-200,height/2-50))
+    text = font.render("GAME OVER", True, black)
+    screen.blit(text, (width/2-200, height/2-50))
 
 
 def win():
     font = pygame.font.SysFont(None, 100)
     text = font.render("YOU WIN", True, black)
     screen.blit(text, (width / 2 - 200, height / 2 - 50))
-    #winSound.play()
+    # winSound.play()
 
 
 def game():
@@ -50,7 +52,6 @@ def game():
     moveBall = False
     Flag = True
 
-
     brickwidth = 100
     brickheight = 15
     brickList = []
@@ -58,12 +59,11 @@ def game():
         for col in range(width // brickwidth):
             brickList.append(pygame.Rect([(5 + brickwidth) * col, (5 + brickheight) * (row+1), brickwidth,brickheight]))
 
-    count =0
+    count = 0
     lifeList = []
     lifeRadius = 5
     for life in range(3):
-        lifeList.append(pygame.Rect((10 + lifeRadius)* life,(10 + lifeRadius) , 5, lifeRadius))
-
+        lifeList.append(pygame.Rect((10 + lifeRadius) * life, (10 + lifeRadius), 5, lifeRadius))
 
     breakSound = pygame.mixer.Sound('point.wav')
 
@@ -91,31 +91,27 @@ def game():
                     break
 
             if event.type == pygame.KEYUP:
-                barmoveX=0
-
-
+                barmoveX = 0
 
         bar_rect = pygame.draw.rect(screen, black, [barX, barY, barWidth, barHeight])
         ball_rect = pygame.Rect(ballX-ballRadius, ballY-ballRadius, ballRadius+ballRadius, ballRadius+ballRadius)
-        ball = pygame.draw.circle(screen,red,[ballX,ballY],ballRadius)
+        ball = pygame.draw.circle(screen, red, [ballX, ballY], ballRadius)
         for i in range(len(brickList)):
-            brick_rect = pygame.draw.rect(screen,blue,brickList[i])
+            brick_rect = pygame.draw.rect(screen, blue, brickList[i])
         for i in range(len(lifeList)):
-            pygame.draw.circle(screen,red,[(10+(lifeRadius+10)*i), 10], lifeRadius)
-
-
+            pygame.draw.circle(screen, red, [(10+(lifeRadius+10)*i), 10], lifeRadius)
 
         if ball_rect.colliderect(bar_rect):
-            moveBallX = random.randint(-1,1)
+            moveBallX = random.randint(-1, 1)
             moveBallY = -1
 
         for i in range(len(brickList)):
             if ball_rect.colliderect(brickList[i]):
                 del brickList[i]
                 moveBallY = 1
-                moveBallX = random.randint(-1,1)
+                moveBallX = random.randint(-1, 1)
                 count += 1
-                FPS += 1000
+                FPS += 5000
                 breakSound .play()
                 break
         for i in range(len(lifeList)):
@@ -125,20 +121,18 @@ def game():
 
         score(count)
 
-
-
-        if ballY < 0 +(ballRadius*2)+ brickheight:
+        if ballY < 0 + (ballRadius * 2) + brickheight:
             moveBallY = 1
         elif ballY > height + height:
             moveBallX = 0
             moveBallY = 0
             moveBall = False
             ballY = barY - ballRadius
-            if len(lifeList) ==0:
+            if len(lifeList) == 0:
                 Flag = False
             else:
                 Flag = True
-        elif ballX > width - (ballRadius *2):
+        elif ballX > width - (ballRadius * 2):
             moveBallX = -1
         elif ballX < 0:
             moveBallX = 1
@@ -154,21 +148,17 @@ def game():
 
         if len(lifeList) == 0:
             gameOver()
-        elif len(brickList)== 0:
-            moveBallY =0
+            barmoveX = 0
+            main.home_screen()
+
+        elif len(brickList) == 0:
+            moveBallY = 0
             moveBallX = 0
             win()
-
-
-
-
-
-
+            lev2.game()
 
         clock.tick(FPS)
         pygame.display.update()
 
-
-game()
 
 
